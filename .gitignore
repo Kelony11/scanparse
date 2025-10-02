@@ -1,2 +1,4 @@
 pa1/target/
 **/*.rs.bk
+.DS_Store
+
