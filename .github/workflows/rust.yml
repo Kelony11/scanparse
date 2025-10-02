@@ -1,3 +1,4 @@
+HEAD
 name: Rust
 
 on:
@@ -20,3 +21,38 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
+
+name: Rust CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: pa1   # 👈 all run steps happen in pa1/
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: pa1
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Run acceptance tests
+        run: |
+          chmod +x ./run_tests.sh
+          ./run_tests.sh
+5ec2630 (Add GitHub Actions CI for Rust)
